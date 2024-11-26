@@ -14,7 +14,7 @@ using Sirenix.OdinInspector;
 #endif
 
 [LuaCallCSharp]
-public class UILuaForm : UIFormLogic
+public class UILuaForm : UIBaseView
 {
     #region 定义回调接口
 

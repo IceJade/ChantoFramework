@@ -1,32 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Framework
 {
-    public class GameModuleManager : IGameLifeCircle
+    public class GameModuleManager : IGame
     {
-        private List<IGameModule> updateList;
-        private List<IGameModule> lateUpdateList;
-        private List<IGameModule> fixedUpdateList;
-        private Dictionary<System.Type, IGameModule> modules;
-
-        public GameModuleManager()
-        {
-            updateList = new List<IGameModule>();
-            lateUpdateList = new List<IGameModule>();
-            fixedUpdateList = new List<IGameModule>();
-
-            modules = new Dictionary<System.Type, IGameModule>();
-        }
+        private List<GameBaseModule> updateList = new();
+        private List<GameBaseModule> lateUpdateList = new();
+        private List<GameBaseModule> fixedUpdateList = new();
+        private Dictionary<System.Type, GameBaseModule> modules = new();
 
         /// <summary>
         /// 添加指定类型模块 
         /// </summary>
-        /// <typeparam name="T">IGameModule</typeparam>
+        /// <typeparam name="T">GameBaseModule</typeparam>
         /// <returns></returns>
         public T Add<T>() where T : GameBaseModule
         {
             System.Type moduleType = typeof(T);
-            IGameModule module;
+            GameBaseModule module;
             if (!modules.TryGetValue(moduleType, out module))
             {
                 module = System.Activator.CreateInstance<T>();
@@ -35,7 +29,7 @@ namespace Framework
             return (T)module;
         }
 
-        public void Add(IGameModule instance)
+        public void Add(GameBaseModule instance)
         {
             System.Type moduleType = instance.GetType();
             if (!modules.ContainsKey(moduleType))
@@ -44,7 +38,7 @@ namespace Framework
             }
         }
 
-        private void Internal_Add(System.Type moduleType, IGameModule module)
+        private void Internal_Add(System.Type moduleType, GameBaseModule module)
         {
             if (module.Updatable)
             {
@@ -61,17 +55,17 @@ namespace Framework
                 fixedUpdateList.Add(module);
             }
             modules.Add(moduleType, module);
-            module.Initialize();
+            module.Init();
         }
 
         /// <summary>
         /// 获取指定类型的游戏模块 
         /// </summary>
-        /// <typeparam name="T">IGameModule</typeparam>
+        /// <typeparam name="T">GameBaseModule</typeparam>
         /// <returns></returns>
-        public T Get<T>() where T : IGameModule
+        public T Get<T>() where T : GameBaseModule
         {
-            IGameModule module;
+            GameBaseModule module;
             if (modules.TryGetValue(typeof(T), out module))
             {
                 return (T)module;
@@ -83,7 +77,45 @@ namespace Framework
         {
             foreach (var pair in modules)
             {
-                pair.Value.Initialize();
+                pair.Value.Init();
+            }
+        }
+
+        public void CreateInstance()
+        {
+            // 获取当前程序集
+            var assembly = Assembly.GetExecutingAssembly();
+
+            // 查找所有继承自 ControllerBase 的类型
+            var moduleTypes = assembly.GetTypes()
+                                           .Where(t => t.IsSubclassOf(typeof(GameBaseModule)) && !t.IsAbstract)
+                                           .ToList();
+
+            // 实例化这些类型
+            foreach (var moduleType in moduleTypes)
+            {
+                if (modules.ContainsKey(moduleType))
+                    continue;
+
+                try
+                {
+                    var moduleInstance = Activator.CreateInstance(moduleType);
+                    Log.Info($"实例化了 {moduleType.Name} 类");
+                }
+                catch (Exception ex)
+                {
+                    Log.Info($"实例化 {moduleType.Name} 时出错: {ex.Message}");
+                }
+            }
+        }
+
+        public void Init()
+        {
+            CreateInstance();
+
+            foreach (var pair in modules)
+            {
+                pair.Value.InitInstance();
             }
         }
 
@@ -97,7 +129,7 @@ namespace Framework
             int moduleCount = updateList.Count;
             if (moduleCount > 0)
             {
-                IGameModule module;
+                GameBaseModule module;
                 for (int i = 0; i < moduleCount; ++i)
                 {
                     module = updateList[i];
@@ -114,7 +146,7 @@ namespace Framework
             int moduleCount = fixedUpdateList.Count;
             if (moduleCount > 0)
             {
-                IGameModule module;
+                GameBaseModule module;
                 for (int i = 0; i < moduleCount; ++i)
                 {
                     module = fixedUpdateList[i];
@@ -131,7 +163,7 @@ namespace Framework
             int moduleCount = lateUpdateList.Count;
             if (moduleCount > 0)
             {
-                IGameModule module;
+                GameBaseModule module;
                 for (int i = 0; i < moduleCount; ++i)
                 {
                     module = lateUpdateList[i];
@@ -156,11 +188,11 @@ namespace Framework
             }
         }
 
-        public void OnApplicationQuit()
+        public void Shutdown()
         {
             foreach (var pair in modules)
             {
-                pair.Value.OnApplicationQuit();
+                pair.Value.Shutdown();
             }
         }
     }

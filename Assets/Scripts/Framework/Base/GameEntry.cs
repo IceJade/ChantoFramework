@@ -16,7 +16,7 @@ namespace Framework
     /// </summary>
     public static class GameEntry
     {
-        private const string UnityFrameworkVersion = "3.1.3";
+        private const string FrameworkVersion = "2024.11.001";
         private static readonly LinkedList<FrameworkComponent> s_FrameworkComponents = new LinkedList<FrameworkComponent>();
 
         /// <summary>
@@ -25,13 +25,13 @@ namespace Framework
         internal const int FrameworkSceneId = 0;
 
         /// <summary>
-        /// 获取 Unity 游戏框架版本号。
+        /// 获取游戏框架版本号。
         /// </summary>
         public static string Version
         {
             get
             {
-                return UnityFrameworkVersion;
+                return FrameworkVersion;
             }
         }
 
@@ -98,104 +98,19 @@ namespace Framework
             }
         }
 
-        // static private CustomDataProxy customDataProxy;
-        // public static CustomDataProxy Data
-        // {
-        //     get
-        //     {
-        //         if (customDataProxy == null)
-        //             customDataProxy = DataProxyManager.Instance.RetrieveProxy<CustomDataProxy>();
-        //         return customDataProxy;
-        //     }
-        // }
+        public static GameModuleManager module;
+        public static GameModuleManager Module
+        {
+            get
+            {
+                if (null == module)
+                {
+                    module = new();
+                }
 
-        //static private CustomDataTableProxy customDataTableProxy;
-        //public static CustomDataTableProxy DataTable
-        //{
-        //    get
-        //    {
-        //        if (customDataTableProxy == null)
-        //            customDataTableProxy = DataProxyManager.Instance.RetrieveProxy<CustomDataTableProxy>();
-        //        return customDataTableProxy;
-        //    }
-        //}
-
-        //public static TimerComponent Timer => TimerComponent.Instance;
-
-        //private static DataConfigComponent dataConfig;
-        //public static DataConfigComponent DataConfig
-        //{
-        //    get
-        //    {
-        //        if (dataConfig == null)
-        //        {
-        //            dataConfig = GetComponent<DataConfigComponent>();
-        //        }
-        //        return dataConfig;
-        //    }
-        //}
-
-        // static private GlobalDataProxy globalDataProxy;
-        // public static GlobalDataProxy GlobalData
-        // {
-        //     get
-        //     {
-        //         if (globalDataProxy == null)
-        //             globalDataProxy = DataProxyManager.Instance.RetrieveProxy<GlobalDataProxy>();
-        //         return globalDataProxy;
-        //     }
-        // }
-
-        // private static GuideControllerComponent guide;
-        // public static GuideControllerComponent Guide
-        // {
-        //     get
-        //     {
-        //         if (guide == null)
-        //         {
-        //             guide = GetComponent<GuideControllerComponent>();
-        //         }
-        //         return guide;
-        //     }
-        // }
-
-        // private static MailDBProxy mailDBHelp;
-        // public static MailDBProxy MailDBHelp
-        // {
-        //     get
-        //     {
-        //         if (mailDBHelp == null)
-        //         {
-        //             mailDBHelp = DataProxyManager.Instance.RetrieveProxy<MailDBProxy>();
-        //         }
-        //         return mailDBHelp;
-        //     }
-        // }
-
-        // private static PersonMailDBProxy personMailDBHelp;
-        // public static PersonMailDBProxy PersonMailDBHelp
-        // {
-        //     get
-        //     {
-        //         if (personMailDBHelp == null)
-        //         {
-        //             personMailDBHelp = DataProxyManager.Instance.RetrieveProxy<PersonMailDBProxy>();
-        //         }
-        //         return personMailDBHelp;
-        //     }
-        // }
-
-        // private static SDKProxy sdkProxy;
-        // public static SDKProxy Sdk
-        // {
-        //     get
-        //     {
-        //         if (sdkProxy == null)
-        //             sdkProxy = DataProxyManager.Instance.RetrieveProxy<SDKProxy>();
-        //
-        //         return sdkProxy;
-        //     }
-        // }
+                return module;
+            }
+        }
 
         static private TableManager table;
         public static TableManager Table
@@ -210,6 +125,22 @@ namespace Framework
                 return table;
             }
         }
+
+        private static LaunchStateMachine stateMachine;
+        public static LaunchStateMachine StateMachine
+        {
+            get
+            {
+                if (null == stateMachine)
+                {
+                    stateMachine = new();
+                }
+
+                return stateMachine;
+            }
+        }
+
+        public static ControllerManager Controller => ControllerManager.Instance;
 
         /// <summary>
         /// 获取游戏框架组件。

@@ -1,11 +1,11 @@
 ﻿namespace Framework
 {
-    public interface IGameModule : System.IComparable, IGameLifeCircle
+    public interface IGameModule : System.IComparable, IGame
     {
         int Priority { get; }
         bool Updatable { get; }
         bool FixedUpdatable { get; }
         bool LateUpdatable { get; }
-        void Initialize();
+        void Init();
     }
 }

@@ -2,27 +2,25 @@ using System;
 
 namespace Framework
 {
-
-    public interface IControllerBaseInit
-    {
-        void Init();
-        void InitData();
-    }
-
     public abstract class ControllerBase
     {
         protected ControllerBase()
         {
-            ControllerContainer.Instance.AddControllerBase(this);
+            ControllerManager.Instance.Add(this);
         }
+
         // OnInit 与  OnPurge 配对使用
         public abstract void InitInstance();
-        // 构造时调用
+        // 初始化
         protected virtual void OnInit() { }
 
         public abstract void DestroyInstance();
         // 销毁时调用
         protected virtual void OnDestroy() { }
+
+        public abstract void LoginSuccess();
+
+        protected virtual void OnLoginSuccess() { }
 
         // 重新登录、断线重连时调用
         // 一般用于清理数据
@@ -40,7 +38,7 @@ namespace Framework
         {
             if (!isUpdateOpen)
             {
-                ControllerContainer.Instance.AddUpdateSecond(this);
+                ControllerManager.Instance.AddUpdateSecond(this);
                 isUpdateOpen = true;
             }
 
@@ -50,7 +48,7 @@ namespace Framework
         {
             if (isUpdateOpen)
             {
-                ControllerContainer.Instance.RemoveUpdateSecond(this);
+                ControllerManager.Instance.RemoveUpdateSecond(this);
                 isUpdateOpen = false;
             }
         }
@@ -62,13 +60,9 @@ namespace Framework
         public void UpdateSecond(float elapsedTime)
         {
             OnUpdateSecond(elapsedTime);
-            onEnterFrame(elapsedTime);
         }
         // 定时器 1秒跑一次
         protected virtual void OnUpdateSecond(float elapsedTime) { }
-
-        //  Cocos 惯用定时器
-        public virtual void onEnterFrame(float elapsedTime) { }
 
         public virtual void OnApplicationFocus(bool focus) { }
 
@@ -121,7 +115,11 @@ namespace Framework
             OnDestroy();
             _instance = null;
         }
-        public static bool isInst()
+        public sealed override void LoginSuccess()
+        {
+            OnLoginSuccess();
+        }
+        public static bool IsInst()
         {
             return null != Instance ? true : false;
         }

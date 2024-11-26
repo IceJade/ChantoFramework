@@ -23,11 +23,11 @@ namespace Framework
 
         public override bool Updatable => true;
 
-        public override void Initialize()
+        public override void Init()
         {
         }
 
-        public override void OnApplicationQuit()
+        public override void Shutdown()
         {
             m_TaskDic.Clear();
         }

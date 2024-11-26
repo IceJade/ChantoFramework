@@ -79,7 +79,7 @@ public class LuaModule : GameBaseSingletonModule<LuaModule>
         m_OnApplicationFocus?.Invoke(focus);
     }
 
-    public override void OnApplicationQuit()
+    public override void Shutdown()
     {
         luaGame?.OnApplicationQuit();
         m_OnApplicationQuit?.Invoke();
@@ -217,7 +217,7 @@ public class LuaModule : GameBaseSingletonModule<LuaModule>
         m_OnLaunchStateExit = null;
 }
     
-    public override void Initialize()
+    public override void Init()
     {
         if (m_LuaEnv != null)
         {

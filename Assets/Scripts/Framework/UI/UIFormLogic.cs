@@ -12,7 +12,7 @@ namespace Framework.UI
     [RequireComponent(typeof(Canvas))]
     [RequireComponent(typeof(GraphicRaycaster))]
     [RequireComponent(typeof(UIForm))]
-    public abstract class UIFormLogic : MonoBehaviour
+    public abstract class UIFormLogic : BaseMono
     {
         public const int DepthFactor = 100;
 
@@ -87,7 +87,7 @@ namespace Framework.UI
         /// 界面初始化。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        protected internal virtual void OnInit(object userData)
+        protected internal virtual void InternalOnInit(object userData)
         {
             if (CachedTransform == null)
             {
@@ -113,7 +113,7 @@ namespace Framework.UI
         /// 界面打开。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        protected internal virtual void OnOpen(object userData)
+        protected internal virtual void InternalOnOpen(object userData)
         {
             ResetUIParams();
 
@@ -144,7 +144,7 @@ namespace Framework.UI
         /// 界面关闭。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        protected internal virtual void OnClose(object userData)
+        protected internal virtual void InternalOnClose(object userData)
         {
             //while (children.Count > 0)
             //{

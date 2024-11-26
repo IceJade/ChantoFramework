@@ -191,8 +191,6 @@ namespace Framework
         {
             base.Awake();
 
-            Log.InfoFormat("Game Framework version is {0}. Unity Game Framework version is {1}.", FrameworkEntry.Version, GameEntry.Version);
-
 #if UNITY_5_3_OR_NEWER || UNITY_5_3
 
             m_EditorResourceMode &= Application.isEditor;
@@ -214,22 +212,11 @@ namespace Framework
 #endif
         }
 
-        private void Start()
-        {
-
-        }
-
-        private void Update()
-        {
-            FrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
-        }
-
         private void OnDestroy()
         {
 #if UNITY_5_6_OR_NEWER
             Application.lowMemory -= OnLowMemory;
 #endif
-            FrameworkEntry.Shutdown();
         }
 
         /// <summary>

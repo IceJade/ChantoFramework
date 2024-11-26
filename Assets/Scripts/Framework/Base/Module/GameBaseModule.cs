@@ -26,7 +26,11 @@
             throw new System.NotImplementedException("Module LateUpdatable Trigger is Ture, But LateUpdate Function Not Override!");
         }
 
-        public virtual void Initialize() {}
+        public abstract void InitInstance();
+
+        public virtual void Init() {}
+
+        public virtual void Reset() { }
 
         public int CompareTo(object other)
         {
@@ -39,7 +43,6 @@
 
         public virtual void OnApplicationFocus(bool focus) { }
         public virtual void OnApplicationPause(bool paused) {}
-        public virtual void OnApplicationQuit() { }
         public virtual void Shutdown() { }
     }
 }

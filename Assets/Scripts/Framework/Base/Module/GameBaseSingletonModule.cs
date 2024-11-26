@@ -2,9 +2,10 @@ using System;
 
 namespace Framework
 {
-    public class GameBaseSingletonModule<T> : GameBaseModule where T : new()
+    public abstract class GameBaseSingletonModule<T> : GameBaseModule where T : GameBaseModule, new()
     {
         protected static T _instance;
+        private bool _isInit = false;
         private static readonly object _lock;
 
         static GameBaseSingletonModule()
@@ -41,6 +42,24 @@ namespace Framework
                 }
                 _instance = value;
             }
+        }
+
+        public sealed override void InitInstance()
+        {
+            if (_isInit)
+                return;
+
+            Init();
+        }
+
+        public override void Init()
+        {
+            _isInit = true;
+        }
+
+        public override void Reset()
+        {
+            _isInit = false;
         }
     }
 }

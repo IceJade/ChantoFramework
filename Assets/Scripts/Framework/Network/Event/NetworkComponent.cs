@@ -8,10 +8,9 @@ namespace Framework.Network
     /// 网络组件。
     /// </summary>
     [DisallowMultipleComponent]
-    [AddComponentMenu("Game Framework/Network")]
     public sealed class NetworkComponent : FrameworkComponent
     {
-        private INetworkManager m_NetworkManager = null;
+        private NetworkManager m_NetworkManager = null;
         private EventComponent m_EventComponent = null;
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace Framework.Network
         {
             base.Awake();
 
-            m_NetworkManager = FrameworkEntry.GetModule<INetworkManager>();
+            m_NetworkManager = NetworkManager.Instance;
             if (m_NetworkManager == null)
             {
                 Log.Info("Network manager is invalid.");

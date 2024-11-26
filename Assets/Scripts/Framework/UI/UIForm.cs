@@ -154,7 +154,7 @@ namespace Framework.UI
                 return;
             }
 
-            m_UIFormLogic.OnInit(userData);
+            m_UIFormLogic.InternalOnOpen(userData);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Framework.UI
         /// <param name="userData">用户自定义数据。</param>
         public void OnOpen(object userData)
         {
-            m_UIFormLogic.OnOpen(userData);
+            m_UIFormLogic.InternalOnOpen(userData);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Framework.UI
         /// <param name="userData">用户自定义数据。</param>
         public void OnClose(object userData)
         {
-			m_UIFormLogic.OnClose(userData);
+			m_UIFormLogic.InternalOnClose(userData);
         }
         public void OnCloseEnd()
         {

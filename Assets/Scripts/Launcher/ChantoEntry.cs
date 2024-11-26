@@ -4,14 +4,11 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class ChantoEntry : IGameEntry
+public class ChantoEntry : IGame
 {
-    public static Camera UICamera;
-
     public static float DeltaTime;
     public static ChantoEntry Instance { get; protected set; }
-    public static LaunchStateMachine StateMachine { get; private set; }
-    private LaunchStateMachine m_launchStateMachine;
+
     public event Action<float, float> OnUpdate;
 
     public static bool Logined;
@@ -19,27 +16,15 @@ public class ChantoEntry : IGameEntry
     {
         Instance = this;
 
-        //获取ui相机
-        UICamera = GameObject.Find("Launcher/UI/GUICamera").GetComponent<Camera>();
-
         InitModules();
 
-        m_launchStateMachine = new LaunchStateMachine();
-        StateMachine = m_launchStateMachine;
-        m_launchStateMachine.Start();
+        GameEntry.StateMachine.Start();
     }
 
     private void InitModules()
     {
-        //FirebaseProxy.Init();
-        // AIHelpProxy.Init();
         DOTween.Init();
-
-        var moduleManager = GameLauncher.Instance.ModuleManager;
-        //moduleManager.Add(NetManager.Instance);
-        moduleManager.Add(TimerManager.Instance);
-        //moduleManager.Add(TimerComponent.Instance);
-        moduleManager.Add(LuaModule.Instance);
+        GameEntry.Module.Init();
     }
 
     public void BeforeUpdate()
@@ -50,42 +35,38 @@ public class ChantoEntry : IGameEntry
     public void Update(float elapsedTime, float realElapsedTime)
     {
         DeltaTime = elapsedTime;
-        // #if UNITY_ANDROID
-        //         if (Input.GetKeyDown(KeyCode.Escape))
-        //         {
-        //             CommandManager.Instance.ExecuteCommand(Notifications.ON_KEYCODE_BACK_DOWN);
-        //         }
-        // #endif
+
         OnUpdate?.Invoke(elapsedTime, realElapsedTime);
-        m_launchStateMachine.Update(elapsedTime);
-        //SceneContainer.Instance.Update();
-        //ScenesManager.getInstance().Update();
+
+        GameEntry.StateMachine.Update(elapsedTime);
+        GameEntry.Module.Update(elapsedTime, realElapsedTime);
     }
 
     public void LateUpdate()
     {
-        //SceneContainer.Instance.LateUpdate();
-        //ScenesManager.getInstance().LateUpdate();
+        GameEntry.Module.LateUpdate();
     }
 
     public void FixedUpdate()
     {
-
+        GameEntry.Module.FixedUpdate();
     }
 
     public void OnApplicationFocus(bool focus)
     {
         Debug.Log("OnApplicationFocus" + focus);
+        GameEntry.Module.OnApplicationFocus(focus);
     }
 
     public void OnApplicationPause(bool pause)
     {
-
+        GameEntry.Module.OnApplicationPause(pause);
     }
 
-    public void OnApplicationQuit()
+    public void Shutdown()
     {
-
+        GameEntry.Controller.Destroy();
+        GameEntry.Module.Shutdown();
     }
 
     public void OnLowMemoryCallback()
