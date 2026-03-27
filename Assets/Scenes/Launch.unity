@@ -278,6 +278,14 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1920
       objectReference: {fileID: 0}
+    - target: {fileID: 2161723738774422531, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161723738774422531, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1920
+      objectReference: {fileID: 0}
     - target: {fileID: 2266123566965480241, guid: adb3eb1c35fcff14f89fba7b05c9d71c, type: 3}
       propertyPath: m_SortingOrder
       value: 15000
