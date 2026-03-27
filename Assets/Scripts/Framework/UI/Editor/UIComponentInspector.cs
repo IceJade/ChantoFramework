@@ -12,7 +12,7 @@ namespace Framework.UI.Editor
         private SerializedProperty m_InstancePriority = null;
         private SerializedProperty m_InstanceRoot = null;
         private SerializedProperty m_UICamera = null;
-        private SerializedProperty m_ChangeSceneMask = null;
+        // private SerializedProperty m_ChangeSceneMask = null;
         private SerializedProperty m_Loading = null;
         private SerializedProperty m_GrayMat = null;
         private SerializedProperty m_UIGroups = null;
@@ -30,7 +30,7 @@ namespace Framework.UI.Editor
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {
                 EditorGUILayout.PropertyField(m_InstanceRoot);
-                EditorGUILayout.PropertyField(m_ChangeSceneMask);
+                // EditorGUILayout.PropertyField(m_ChangeSceneMask);
 
                 //UIComponent中没有m_Loading,在选中UI节点的会报空，先加判空处理
                 if (m_Loading != null)
@@ -113,7 +113,7 @@ namespace Framework.UI.Editor
             m_InstanceExpireTime = serializedObject.FindProperty("m_InstanceExpireTime");
             m_InstancePriority = serializedObject.FindProperty("m_InstancePriority");
             m_InstanceRoot = serializedObject.FindProperty("m_InstanceRoot");
-            m_ChangeSceneMask = serializedObject.FindProperty("ChangeSceneMask");
+            // m_ChangeSceneMask = serializedObject.FindProperty("ChangeSceneMask");
             m_Loading = serializedObject.FindProperty("Loading");
             m_UICamera = serializedObject.FindProperty("m_UICamera");
             m_GrayMat = serializedObject.FindProperty("m_GrayMaterial");
