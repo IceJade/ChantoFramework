@@ -8,7 +8,7 @@
         public static class UIAssets
         {
             // 登录界面
-            public const string UILoginView = "Assets/CardGame/Resources/CardGame/UI/Prefab/UILoginView.prefab";
+            public const string UILoginView = "Assets/Resources/Prefabs/UI/UILoginView.prefab";
         }
     }
 }

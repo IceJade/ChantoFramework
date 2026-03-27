@@ -19,6 +19,8 @@ public class ChantoEntry : IGame
         InitModules();
 
         GameEntry.StateMachine.Start();
+        // 打开登录界面
+        UILoginView.OpenUI();
     }
 
     private void InitModules()
